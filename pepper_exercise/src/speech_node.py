@@ -7,7 +7,7 @@ from detector import Detector
 import ros_numpy # pip3 install git+https://github.com/eric-wieser/ros_numpy
 #from naoqi_driver.naoqi_node import NaoqiNode
 from classmap import category_map as classmap
-from srv import Say
+from pepper_exercise.srv import Say
 
 
 
@@ -29,7 +29,7 @@ def call_srv(text):
 def rcv_detection(msg):
     #global pub
     detected_objs=[]
-    text="message: 'I see "
+    text="message: 'I see"
     for d in msg.detections:
         c = d.results[0].id
         detected_objs.append(classmap[c])
@@ -38,11 +38,11 @@ def rcv_detection(msg):
 
     if len(detected_objs)>0:
         for obj in detected_objs:
-            text+=obj
-            text+=" ' "
+            text+=" "+obj
+        text+=" ' "
         call_srv(text)
     else:
-        text+="Nothing' "
+        text+=" Nothing' "
         call_srv(text)
 
     rospy.loginfo("TEXT: %s" % text)
