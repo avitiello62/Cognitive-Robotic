@@ -7,43 +7,45 @@ from detector import Detector
 import ros_numpy # pip3 install git+https://github.com/eric-wieser/ros_numpy
 #from naoqi_driver.naoqi_node import NaoqiNode
 from classmap import category_map as classmap
+from srv import Say
 
 
 
-'''
-class AnimatedSay(NaoqiNode):
-    def __init__(self):
-        NaoqiNode.__init__(self,'animated_speech')
-        self.connectNaoQi()
-        pass
-    def say(self,message):
-        rospy.loginfo("START: %s" % data.message)
-        self.speech.say(message)
-        rospy.loginfo("END: %s" % data.message)
-        
-    def connectNaoQi(self):
-        self.speech=self.get_proxy("ALAnimatedSpeech")
-        
-'''
+
 rospy.init_node('speech_node')
 #pub = AnimatedSay()
 
+def rcv_head_position(msg):
+    pass
+
+def call_srv(text):
+    rospy.wait_for_service('animated_say')
+    animated_say = rospy.ServiceProxy('animated_say', Say)
+    try:
+        resp1 = animated_say(text)
+    except rospy.ServiceException as exc:
+        print("Service did not process request: " + str(exc)) 
 
 def rcv_detection(msg):
     #global pub
     detected_objs=[]
-    text='I see '
+    text="message: 'I see "
     for d in msg.detections:
         c = d.results[0].id
         detected_objs.append(classmap[c])
-    for obj in detected_objs:
-        text+=obj
-        text+=' '
-    rospy.loginfo("START: %s" % text)
-    #pub.say(text)
 
+    rospy.loginfo("START: Service call!!")
 
+    if len(detected_objs)>0:
+        for obj in detected_objs:
+            text+=obj
+            text+=" ' "
+        call_srv(text)
+    else:
+        text+="Nothing' "
+        call_srv(text)
 
+    rospy.loginfo("TEXT: %s" % text)
 
 sd = rospy.Subscriber("detection", Detection2DArray, rcv_detection)
 
