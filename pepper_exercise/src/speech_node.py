@@ -29,7 +29,7 @@ def call_srv(text):
 def rcv_detection(msg):
     #global pub
     detected_objs=[]
-    text="message: 'I see"
+    text="I see"
     for d in msg.detections:
         c = d.results[0].id
         detected_objs.append(classmap[c])
@@ -39,10 +39,10 @@ def rcv_detection(msg):
     if len(detected_objs)>0:
         for obj in detected_objs:
             text+=" "+obj
-        text+=" ' "
+        text+=" "
         call_srv(text)
     else:
-        text+=" Nothing' "
+        text+=" Nothing "
         call_srv(text)
 
     rospy.loginfo("TEXT: %s" % text)

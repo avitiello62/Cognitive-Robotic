@@ -6,6 +6,7 @@ from pepper_exercise.srv import Say
 class AnimatedSay(NaoqiNode):
     def __init__(self):
         NaoqiNode.__init__(self,'animated_speech')
+        self.pip="10.0.1.207"
         self.connectNaoQi()
         pass
 
