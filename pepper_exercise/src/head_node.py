@@ -2,10 +2,20 @@
 import rospy
 from naoqi_bridge_msgs.msg import JointAnglesWithSpeed
 from std_msgs.msg import String
+from sensor_msgs.msg import Image
+
+current_img_msg = None
+
+def rcv_img(msg):
+    global current_img_msg
+    current_img_msg=msg
+    
 
 rospy.init_node('test')
 p = rospy.Publisher('/pepper_robot/pose/joint_angles', JointAnglesWithSpeed, queue_size=0)
 p2 = rospy.Publisher('/head_position', String, queue_size=0)
+si = rospy.Subscriber("image", Image, rcv_img)
+pi = rospy.Publisher("/image_head", Image, queue_size=0)
 s = JointAnglesWithSpeed()
 s.joint_names=['HeadPitch', 'HeadYaw']
 s.relative=0
@@ -19,6 +29,7 @@ while not rospy.is_shutdown():
         rospy.loginfo(s.joint_angles)
         p.publish(s)
         p2.publish(head_positions[i])
+        pi.publish(current_img_msg)
         rate.sleep()
     p2.publish("end")
     rate.sleep()

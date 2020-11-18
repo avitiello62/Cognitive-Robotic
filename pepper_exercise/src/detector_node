@@ -13,7 +13,7 @@ rospy.init_node('detector_node')
 pub = rospy.Publisher('detection', Detection2DArray, queue_size=2)
 
 
-def rcv_image(msg):
+def rcv_img(msg):
     image = ros_numpy.numpify(msg)
     detections = mydetector(image)
     message = Detection2DArray()
@@ -32,7 +32,7 @@ def rcv_image(msg):
     rospy.loginfo("published")
 
 
-si = rospy.Subscriber("image", Image, rcv_image)
+si = rospy.Subscriber("/image_head", Image, rcv_img)
 
 
 
