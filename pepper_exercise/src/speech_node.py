@@ -8,15 +8,19 @@ import ros_numpy # pip3 install git+https://github.com/eric-wieser/ros_numpy
 #from naoqi_driver.naoqi_node import NaoqiNode
 from classmap import category_map as classmap
 from pepper_exercise.srv import Say
+from std_msgs.msg import String
 
 
 
 
 rospy.init_node('speech_node')
 #pub = AnimatedSay()
+pos_obj = {"left":{},"center":{},"right":{}}
+current_pos = None
 
 def rcv_head_position(msg):
-    pass
+    global current_pos
+    current_pos=msg.data
 
 def call_srv(text):
     rospy.wait_for_service('animated_say')
@@ -27,15 +31,30 @@ def call_srv(text):
         print("Service did not process request: " + str(exc)) 
 
 def rcv_detection(msg):
-    #global pub
-    detected_objs=[]
-    text="I see"
+    global current_pos
+    detected_objs={}
+    text="I can see"
+
     for d in msg.detections:
         c = d.results[0].id
-        detected_objs.append(classmap[c])
+        detected_objs[classmap[c]]=1
 
-    rospy.loginfo("START: Service call!!")
+    if not current_pos=="end":
+        pos_obj[current_pos]=detected_objs
+    else:
+        content=""
+        positions = pos_obj.keys()
+        for position in positions:
+            content+=" at "+position
+            classes = pos_obj[position].keys()
+            for _cls in classes:
+                content+=_cls+", "
+        text+=content
 
+        rospy.loginfo("START: Service call!!")
+        call_srv(text)
+ 
+    """
     if len(detected_objs)>0:
         for obj in detected_objs:
             text+=" "+obj
@@ -44,10 +63,11 @@ def rcv_detection(msg):
     else:
         text+=" Nothing "
         call_srv(text)
-
+    """
     rospy.loginfo("TEXT: %s" % text)
 
 sd = rospy.Subscriber("detection", Detection2DArray, rcv_detection)
+sh = rospy.Subscriber("head_position", String, rcv_head_position)
 
 try:
     rospy.spin()
