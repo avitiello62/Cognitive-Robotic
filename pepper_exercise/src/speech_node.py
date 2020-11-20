@@ -1,15 +1,13 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 import os
 import rospy
 from sensor_msgs.msg import Image
 from vision_msgs.msg import Detection2D, Detection2DArray, ObjectHypothesisWithPose
 from detector import Detector
-import ros_numpy # pip3 install git+https://github.com/eric-wieser/ros_numpy
 #from naoqi_driver.naoqi_node import NaoqiNode
 from classmap import category_map as classmap
 from pepper_exercise.srv import Say
 from std_msgs.msg import String
-
 
 
 
@@ -41,10 +39,12 @@ def rcv_detection(msg):
 
     if not current_pos=="end":
         pos_obj[current_pos]=detected_objs
+        
     else:
         content=""
         positions = pos_obj.keys()
         for position in positions:
+            rospy.loginfo("Ciao")
             content+=" at "+position
             classes = pos_obj[position].keys()
             for _cls in classes:

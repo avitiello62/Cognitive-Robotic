@@ -6,15 +6,15 @@ from pepper_exercise.srv import Say
 class AnimatedSay(NaoqiNode):
     def __init__(self):
         NaoqiNode.__init__(self,'animated_speech')
-        self.pip="10.0.1.207"
-        self.connectNaoQi()
+        self.pip="10.0.1.230"
+        self.connectNaoQi()    
         pass
 
     def say(self,data):
         rospy.loginfo("START: %s" % data.message)
         self.speech.say(data.message)
         rospy.loginfo("END: %s" % data.message)
-        return SayResponse(True)
+        return True
         
     def connectNaoQi(self):
         self.speech=self.get_proxy("ALAnimatedSpeech")
