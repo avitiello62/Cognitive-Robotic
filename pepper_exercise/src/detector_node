@@ -5,15 +5,18 @@ from sensor_msgs.msg import Image
 from vision_msgs.msg import Detection2D, Detection2DArray, ObjectHypothesisWithPose
 from detector import Detector
 import ros_numpy # pip3 install git+https://github.com/eric-wieser/ros_numpy
+from std_msgs.msg import String
 
 DET_PATH=os.path.join(os.path.dirname(__file__),'efficientdet_d1_coco17_tpu-32')
 mydetector = Detector(DET_PATH)
 
 rospy.init_node('detector_node')
 pub = rospy.Publisher('detection', Detection2DArray, queue_size=2)
+pub_init = rospy.Publisher('detector_started', String, queue_size=0)
+rate = rospy.Rate(0.2)
 
 
-def rcv_img(msg):
+def rcv_image(msg):
     image = ros_numpy.numpify(msg)
     detections = mydetector(image)
     message = Detection2DArray()
@@ -31,8 +34,10 @@ def rcv_img(msg):
     pub.publish(message)
     rospy.loginfo("published")
 
-
-si = rospy.Subscriber("/image_head", Image, rcv_img)
+rate.sleep()
+pub_init.publish("Detector started!")
+si = rospy.Subscriber("/image_head", Image, rcv_image)
+rospy.loginfo("Detector initialized.")
 
 
 

@@ -16,9 +16,26 @@ rospy.init_node('speech_node')
 pos_obj = {"left":{},"center":{},"right":{}}
 current_pos = None
 
+
 def rcv_head_position(msg):
     global current_pos
+    global pos_obj
     current_pos=msg.data
+    if current_pos=="end":
+        content="I can see "
+        positions = pos_obj.keys()
+        for position in positions:
+            content+=" at "+position+' : '
+            classes = pos_obj[position].keys()
+            if len(classes)<=0:
+                content+="nothing, "
+            for _cls in classes:
+                content+=_cls+", "
+        
+
+        rospy.loginfo("START: Service call!!")
+        rospy.loginfo(content)
+        call_srv(content)
 
 def call_srv(text):
     rospy.wait_for_service('animated_say')
@@ -31,40 +48,15 @@ def call_srv(text):
 def rcv_detection(msg):
     global current_pos
     detected_objs={}
-    text="I can see"
-
     for d in msg.detections:
         c = d.results[0].id
         detected_objs[classmap[c]]=1
 
-    if not current_pos=="end":
-        pos_obj[current_pos]=detected_objs
-        
-    else:
-        content=""
-        positions = pos_obj.keys()
-        for position in positions:
-            rospy.loginfo("Ciao")
-            content+=" at "+position
-            classes = pos_obj[position].keys()
-            for _cls in classes:
-                content+=_cls+", "
-        text+=content
+    
+    pos_obj[current_pos]=detected_objs
+    
 
-        rospy.loginfo("START: Service call!!")
-        call_srv(text)
- 
-    """
-    if len(detected_objs)>0:
-        for obj in detected_objs:
-            text+=" "+obj
-        text+=" "
-        call_srv(text)
-    else:
-        text+=" Nothing "
-        call_srv(text)
-    """
-    rospy.loginfo("TEXT: %s" % text)
+    
 
 sd = rospy.Subscriber("detection", Detection2DArray, rcv_detection)
 sh = rospy.Subscriber("head_position", String, rcv_head_position)
