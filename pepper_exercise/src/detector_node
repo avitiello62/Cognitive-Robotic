@@ -7,16 +7,20 @@ from detector import Detector
 import ros_numpy # pip3 install git+https://github.com/eric-wieser/ros_numpy
 from std_msgs.msg import String
 
+#load detector path
 DET_PATH=os.path.join(os.path.dirname(__file__),'efficientdet_d1_coco17_tpu-32')
 mydetector = Detector(DET_PATH)
 
+#initialize node and register Publisher topic to master node 
 rospy.init_node('detector_node')
 pub = rospy.Publisher('detection', Detection2DArray, queue_size=2)
 pub_init = rospy.Publisher('detector_started', String, queue_size=0)
 rate = rospy.Rate(0.2)
 
-
+#define callback for image received from head_node
 def rcv_image(msg):
+
+    #apply detection and publish on 'detection' topic
     image = ros_numpy.numpify(msg)
     detections = mydetector(image)
     message = Detection2DArray()
@@ -35,7 +39,11 @@ def rcv_image(msg):
     rospy.loginfo("published")
 
 rate.sleep()
+
+#notify other node that the detector is ready 
 pub_init.publish("Detector started!")
+
+#subscribe to receive image from head_node
 si = rospy.Subscriber("/image_head", Image, rcv_image)
 rospy.loginfo("Detector initialized.")
 
