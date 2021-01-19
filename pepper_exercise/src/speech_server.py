@@ -12,9 +12,9 @@ class AnimatedSay(NaoqiNode):
         pass
 
     def say(self,data):
-        rospy.loginfo("START: %s" % data.message)
+        rospy.loginfo("SPEECH SERVICE CALL: %s" % data.message)
         self.speech.say(data.message)
-        rospy.loginfo("END: %s" % data.message)
+        #rospy.loginfo("END: %s" % data.message)
         return True
         
     def connectNaoQi(self):

@@ -13,7 +13,7 @@ from PepperHandler import PepperHandler
 #initialize node and register Publisher topic to master node 
 rospy.init_node('synchronization_node')
 pub_detection = rospy.Publisher('detection_and_head_position', DetectionInfo, queue_size=0)
-rate = rospy.Rate(0.3)
+rate = rospy.Rate(0.2)
 pepper_handler=PepperHandler()
 
 
@@ -30,7 +30,7 @@ def detect_image_client(img):
 
 
 def apply_detection():
-    current_img_msg = rospy.wait_for_message("/image/image_raw", Image)
+    current_img_msg = rospy.wait_for_message("/pepper_robot/camera/front/camera/image_raw", Image)
     detection_msg=detect_image_client(current_img_msg)
     return detection_msg
 
@@ -38,14 +38,15 @@ apply_detection()
 rospy.loginfo("Detection service ready")
 
 for pos in ['left','center','right']:
+    
     pepper_handler.turn(pos)
     rospy.sleep(3.0)
     detection_msg=apply_detection() 
     pepper_handler.publish_detection(detection_msg.detections,pos)
-
     
-pepper_handler.publish_detection([],'home')
-pepper_handler.turn('home')
 
+pepper_handler.turn('home')
+rospy.sleep(1.0)
+pepper_handler.publish_detection([],'home')
   
 

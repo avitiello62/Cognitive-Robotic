@@ -38,7 +38,6 @@ def rcv_detection_and_head_pos(msg):
         pos_obj[current_pos] = detected_objs
     else:
         content = "I can see "
-        positions = pos_obj.keys()
         for position in ['left', 'center', 'right']:
             content += " at "+position+' : '
             classes = pos_obj[position].keys()
@@ -46,14 +45,10 @@ def rcv_detection_and_head_pos(msg):
                 content += "nothing, "
             for _cls in classes:
                 content += _cls+", "
-        rospy.loginfo(content)
-        return
-
-'''
-        rospy.loginfo("START: Service call!!")
-        rospy.loginfo(content)
+    
         call_srv(content)
-'''
+        
+
 
 shd = rospy.Subscriber("detection_and_head_position",
                        DetectionInfo, rcv_detection_and_head_pos)
