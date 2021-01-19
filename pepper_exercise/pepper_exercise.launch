@@ -1,6 +1,6 @@
 <launch>
-  <node name="speech_server" pkg="pepper_exercise" type="speech_server.py" output="screen"/>
-  <node name="speech_node" pkg="pepper_exercise" type="speech_node.py" output="screen"/>
+  <node name="speech_server" pkg="pepper_exercise" type="speech_server" output="screen"/>
+  <node name="pepper_speech" pkg="pepper_exercise" type="pepper_speech" output="screen"/>
   <node name="detector_server" pkg="pepper_exercise" type="detector_server" output="screen"/>
-  <node name="syncronization_node" pkg="pepper_exercise" type="syncronization_node.py" output="screen"/>
+  <node name="pepper_object_recognition" pkg="pepper_exercise" type="pepper_object_recognition" output="screen"/>
 </launch>

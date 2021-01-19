@@ -1,10 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 import rospy
 from naoqi_bridge_msgs.msg import JointAnglesWithSpeed
 from std_msgs.msg import String
 from pepper_exercise.msg import DetectionInfo
-from HeadHandler import HeadHandler
-from DetectionInfoHandler import DetectionInfoHandler
+from utils.HeadHandler import HeadHandler
+from utils.DetectionInfoHandler import DetectionInfoHandler
 
 class PepperHandler:
 

@@ -4,13 +4,13 @@ import rospy
 from sensor_msgs.msg import Image
 from vision_msgs.msg import Detection2D, Detection2DArray, ObjectHypothesisWithPose
 
-from classmap import category_map as classmap
+from utils.Classmap import category_map as classmap
 from pepper_exercise.srv import Say
 from std_msgs.msg import String
 from pepper_exercise.msg import DetectionInfo
 
 # initialize node
-rospy.init_node('speech_node')
+rospy.init_node('pepper_speech')
 
 # dictionary to track objects detected related to pepper position
 pos_obj = {"left": {}, "center": {}, "right": {}}

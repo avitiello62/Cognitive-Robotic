@@ -5,13 +5,13 @@ from std_msgs.msg import String
 from sensor_msgs.msg import Image
 from vision_msgs.msg import Detection2DArray
 from pepper_exercise.srv import Detect
-from HeadHandler import HeadHandler
+from utils.HeadHandler import HeadHandler
 from pepper_exercise.msg import DetectionInfo
-from PepperHandler import PepperHandler
+from utils.PepperHandler import PepperHandler
 
 
 #initialize node and register Publisher topic to master node 
-rospy.init_node('synchronization_node')
+rospy.init_node('pepper_object_recognition')
 pub_detection = rospy.Publisher('detection_and_head_position', DetectionInfo, queue_size=0)
 rate = rospy.Rate(0.2)
 pepper_handler=PepperHandler()
