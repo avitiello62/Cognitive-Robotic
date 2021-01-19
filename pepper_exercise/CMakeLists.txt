@@ -9,7 +9,6 @@ project(pepper_exercise)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   message_generation
-  message_runtime
   rospy
   sensor_msgs
   vision_msgs
@@ -50,17 +49,18 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
+ add_message_files(
+   FILES
+   DetectionInfo.msg
 #   Message2.msg
-# )
+ )
 
 ## Generate services in the 'srv' folder
 add_service_files(
   DIRECTORY srv
    FILES
    Say.srv
+   Detect.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -72,7 +72,9 @@ add_service_files(
 
 generate_messages(
    DEPENDENCIES
-   std_msgs  # Or other packages containing msgs
+   std_msgs
+   sensor_msgs
+   vision_msgs
  )
 
 ################################################
@@ -107,7 +109,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES pepper_exercise
-#  CATKIN_DEPENDS message_generation message_runtime rospy sensor_msgs vision_msgs
+  CATKIN_DEPENDS  message_runtime rospy sensor_msgs vision_msgs std_msgs
 #  DEPENDS system_lib
 )
 

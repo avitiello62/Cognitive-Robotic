@@ -6,22 +6,20 @@ from vision_msgs.msg import Detection2D, Detection2DArray, ObjectHypothesisWithP
 from detector import Detector
 import ros_numpy # pip3 install git+https://github.com/eric-wieser/ros_numpy
 from std_msgs.msg import String
+from pepper_exercise.srv import Detect
+import tensorflow as tf
 
-#load detector path
+
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 DET_PATH=os.path.join(os.path.dirname(__file__),'efficientdet_d1_coco17_tpu-32')
 mydetector = Detector(DET_PATH)
+print('detector ready.')
 
-#initialize node and register Publisher topic to master node 
-rospy.init_node('detector_node')
-pub = rospy.Publisher('detection', Detection2DArray, queue_size=2)
-pub_init = rospy.Publisher('detector_started', String, queue_size=0)
-rate = rospy.Rate(0.2)
+def detect_image(msg):
+    
+    img=msg.img
+    image = ros_numpy.numpify(img)
 
-#define callback for image received from head_node
-def rcv_image(msg):
-
-    #apply detection and publish on 'detection' topic
-    image = ros_numpy.numpify(msg)
     detections = mydetector(image)
     message = Detection2DArray()
     for clabel,score,box in zip(detections['detection_classes'], detections['detection_scores'], detections['detection_boxes']):
@@ -35,23 +33,15 @@ def rcv_image(msg):
         o.id = clabel
         d.results.append(o)
         message.detections.append(d)
-    pub.publish(message)
-    rospy.loginfo("published")
-
-rate.sleep()
-
-#notify other node that the detector is ready 
-pub_init.publish("Detector started!")
-
-#subscribe to receive image from head_node
-si = rospy.Subscriber("/image_head", Image, rcv_image)
-rospy.loginfo("Detector initialized.")
+    return message
 
 
-
-try:
+def detection_server():
+    rospy.init_node('detector_server')
+    s = rospy.Service('detect_service', Detect, detect_image)
     rospy.spin()
 
-except KeyboardInterrupt:
-    print("Shutting down")
-    
+if __name__=="__main__":
+    detection_server()
+
+   
