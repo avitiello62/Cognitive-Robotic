@@ -44,7 +44,7 @@ rospy.loginfo("Detection service ready")
 for pos in ['left','center','right']:
     
     pepper_handler.turn(pos)
-    rospy.sleep(3.0)
+    rospy.sleep(2.0)
     detection_msg=apply_detection() 
     pepper_handler.publish_detection(detection_msg.detections,pos)
     
