@@ -30,6 +30,9 @@ def rcv_detection_and_head_pos(msg):
 
     global pos_obj
     current_pos = msg.head_position
+    if current_pos == 'start':
+        #rospy.loginfo("I'm going to inspect the room.")
+        call_srv("I'm going to inspect the room.")
     if current_pos != 'home':
         detected_objs = {}
         for d in msg.detections:

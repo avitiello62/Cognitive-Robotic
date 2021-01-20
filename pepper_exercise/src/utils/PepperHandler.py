@@ -11,7 +11,7 @@ class PepperHandler:
     def __init__(self):
         self._head_handler = HeadHandler()
         self._custom_detection_info=DetectionInfoHandler()
-        self.head_position={'left':1,'center':0,'right':-1,'home':0}
+        self.head_position={'left':1,'center':0,'right':-1,'home':0,'start':0}
 
     def turn(self,pos):        
         self._head_handler.set_joint_angles([0.2, self.head_position[pos]])

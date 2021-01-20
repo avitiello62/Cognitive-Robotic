@@ -6,7 +6,7 @@ from std_msgs.msg import String
 class HeadHandler:
     def __init__(self):
         self._pub_joint = rospy.Publisher(
-            '/pepper_robot/pose/joint_angles', JointAnglesWithSpeed, queue_size=0)
+            '/pepper_robot/pose/joint_angles', JointAnglesWithSpeed, queue_size=0,latch=True)
         self._s = JointAnglesWithSpeed()
         self.init_joint()
        

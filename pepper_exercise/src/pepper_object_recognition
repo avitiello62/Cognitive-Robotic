@@ -13,7 +13,6 @@ from utils.PepperHandler import PepperHandler
 #initialize node and register Publisher topic to master node 
 rospy.init_node('pepper_object_recognition')
 pub_detection = rospy.Publisher('detection_and_head_position', DetectionInfo, queue_size=0)
-rate = rospy.Rate(0.2)
 pepper_handler=PepperHandler()
 
 
@@ -31,8 +30,13 @@ def detect_image_client(img):
 
 def apply_detection():
     current_img_msg = rospy.wait_for_message("/pepper_robot/camera/front/camera/image_raw", Image)
+    #current_img_msg = rospy.wait_for_message("/image/image_raw", Image)
     detection_msg=detect_image_client(current_img_msg)
     return detection_msg
+
+rospy.sleep(2.0)
+pepper_handler.turn('start')
+pepper_handler.publish_detection([],'start')
 
 apply_detection()
 rospy.loginfo("Detection service ready")
