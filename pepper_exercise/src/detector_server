@@ -1,26 +1,34 @@
 #!/usr/bin/env python3
 import os
 import rospy
-from sensor_msgs.msg import Image
 from vision_msgs.msg import Detection2D, Detection2DArray, ObjectHypothesisWithPose
 from utils.Detector import Detector
 import ros_numpy # pip3 install git+https://github.com/eric-wieser/ros_numpy
-from std_msgs.msg import String
 from pepper_exercise.srv import Detect
 import tensorflow as tf
 
-
-tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
+"""
+Il file fornisce un nodo chiamato detector_server che mette a disposizione un servizio chiamato detect_service.
+Utilizzando il servizio detect_service viene chiamata la funzione detect_image che si occupa di 
+utilizzare il detector, istanziato appena viene lanciato il file, per fare la detection degli oggetti
+nell'immagine.
+"""
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR) # ci limitiamo a stampare solo i messaggi di log che rappresentano errori
 DET_PATH=os.path.join(os.path.dirname(__file__),'efficientdet_d1_coco17_tpu-32')
-mydetector = Detector(DET_PATH)
+mydetector = Detector(DET_PATH) # istanziamo il detector appena viene lanciato il file
 print('detector ready.')
 
 def detect_image(msg):
-    
-    img=msg.img
+    """
+    La funzione è una callback che viene chiamata quando si invoca il servizio detect_service.
+    Essa riceve in ingresso istanze del tipo DetectRequest, dal quale preleva un oggetto Image
+    che passa a un Detector, il quale a sua volta restituisce un istanza di tipo Detection2DArray, che questa
+    funzione restituisce in output.
+    """
+    img=msg.img #preleva l'oggetto chiamato img in DetectRequest
     image = ros_numpy.numpify(img)
 
-    detections = mydetector(image)
+    detections = mydetector(image) #passa l'immagine al detector
     message = Detection2DArray()
     for clabel,score,box in zip(detections['detection_classes'], detections['detection_scores'], detections['detection_boxes']):
         d = Detection2D()
@@ -37,8 +45,11 @@ def detect_image(msg):
 
 
 def detection_server():
-    rospy.init_node('detector_server')
-    s = rospy.Service('detect_service', Detect, detect_image)
+    """
+    Questa funzione inizializza il nodo detector_serer, per poi mettere a disposizione il servizio detect_service.
+    """
+    rospy.init_node('detector_server') #dichiarazione del nodo
+    s = rospy.Service('detect_service', Detect, detect_image) #dichiarazione del servizio detect_service.
     rospy.spin()
 
 if __name__=="__main__":
