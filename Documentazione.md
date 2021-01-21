@@ -1,7 +1,5 @@
 # Documentazione Pepper Sociale
 
-## Architettura 
-
 ### Directory Tree
 ![DirectoryTree](https://user-images.githubusercontent.com/58516353/105385229-65fac780-5c13-11eb-8ccf-01d6796f8a02.PNG)
 
