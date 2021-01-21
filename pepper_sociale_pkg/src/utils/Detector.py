@@ -3,9 +3,9 @@ assert(int(tf.__version__.split('.')[0]) >= 2)
 import numpy as np
 
 class Detector:
-'''
-Classe Detector che istanzia un detector preaddestrato con la libreria tensorflow
-'''
+    '''
+    Classe Detector che istanzia un detector preaddestrato con la libreria tensorflow
+    ''' 
     def __init__(self,model_path):
         '''load del modello da file'''
         self.detect_fn = tf.saved_model.load(model_path)
@@ -17,7 +17,6 @@ Classe Detector che istanzia un detector preaddestrato con la libreria tensorflo
         input_tensor = input_tensor[tf.newaxis, ...]
         detections = self.detect_fn(input_tensor)
         num_above_thresh = np.sum( detections['detection_scores'] > threshold )
-        #print ("%d objects found" % num_above_thresh)
         detections.pop('num_detections')
         detections = {key: value[0, :num_above_thresh].numpy() for key, value in detections.items()}
         detections['detection_classes'] = detections['detection_classes'].astype(np.int64)

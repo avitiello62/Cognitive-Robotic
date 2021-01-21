@@ -6,7 +6,6 @@ from utils.Detector import Detector
 import ros_numpy # pip3 install git+https://github.com/eric-wieser/ros_numpy
 from pepper_sociale_pkg.srv import Detect
 import tensorflow as tf
-
 """
 Il file fornisce un nodo chiamato detector_server che mette a disposizione un servizio chiamato detect_service.
 Utilizzando il servizio detect_service viene chiamata la funzione detect_image che si occupa di 
@@ -16,7 +15,7 @@ nell'immagine.
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR) # ci limitiamo a stampare solo i messaggi di log che rappresentano errori
 DET_PATH=os.path.join(os.path.dirname(__file__),'efficientdet_d1_coco17_tpu-32')
 mydetector = Detector(DET_PATH) # istanziamo il detector appena viene lanciato il file
-print('detector ready.')
+print('Detector ready')
 
 def detect_image(msg):
     """

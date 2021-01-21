@@ -4,9 +4,9 @@ from naoqi_bridge_msgs.msg import JointAnglesWithSpeed
 
 
 class HeadHandler:
-'''
-Classe responsabile del movimento dei giunti della testa di pepper.
-'''
+    '''
+    Classe responsabile del movimento dei giunti della testa di pepper.
+    '''
     def __init__(self):
         '''init del publisher e dei parametri per il movimento dei giunti '''
         self._pub_joint = rospy.Publisher(

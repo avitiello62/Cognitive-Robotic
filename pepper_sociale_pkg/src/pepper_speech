@@ -36,12 +36,11 @@ def rcv_detection_and_head_pos(msg):
     Essa permette a Pepper di:
     - inviare un messaggio di saluto prima che inizi a girare la testa
     - tenere traccia degli oggetti in ogni posizione in cui si trova il robot
-    - quando il robot arriva nella posizione di home, costruisce la frase che Pepper dovrà pronunciare.
+    - quando il robot arriva nella posizione di home, costruisce la frase che Pepper dovra pronunciare.
     """
     global pos_obj
     current_pos = msg.head_position
     if current_pos == 'start':
-        #rospy.loginfo("I'm going to inspect the room.")
         call_srv("Hello to everyone. I'm going to inspect the room.")
     elif current_pos != 'home': # se non sono nella posizione di home riempie il dizionario con gli oggetti in ogni posizione
         detected_objs = {}
@@ -60,6 +59,7 @@ def rcv_detection_and_head_pos(msg):
                 content += _cls+", "
         content+=" goodbye."
         call_srv(content)
+        
         
 
 shd = rospy.Subscriber("detection_and_head_position",

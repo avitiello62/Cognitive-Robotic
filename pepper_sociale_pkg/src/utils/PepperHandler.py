@@ -4,7 +4,7 @@ from utils.HeadHandler import HeadHandler
 from utils.DetectionInfoHandler import DetectionInfoHandler
 
 class PepperHandler:
-'''Classe che implementa il design pattern Facade per la gestione delle pubblicazioni relative sia alla movimento che alle detection di pepper'''
+    '''Classe che implementa il design pattern Facade per la gestione delle pubblicazioni relative sia alla movimento che alle detection di pepper'''
     def __init__(self):
         '''init degli handler e di un dizionario per la posizione da far assumere a pepper'''
         self._head_handler = HeadHandler()
@@ -14,9 +14,9 @@ class PepperHandler:
     def turn_head(self,pos):
         '''ruota la testa nella direzione indicata del parametro pos.
            Posizioni consentite:
-                -left: ruota la testa di 90° verso sinistra
+                -left: ruota la testa di 90 gradi verso sinistra
                 -center: ruota la testa in direzione centrale
-                -right: ruota la testa di 90° verso destra
+                -right: ruota la testa di 90 gradi verso destra
                 -start: ruota la testa in direzione centrale (posizione iniziale scelta)
                 -home: ruota la testa in direzione centrale (posizione finale scelta)
         '''
@@ -24,7 +24,7 @@ class PepperHandler:
         self._head_handler.set_joint_angles([0.2, self._head_position[pos]])
         #publish dei parametri sul topic designato da HeadHandler
         self._head_handler.publish_joint()
-        rospy.loginfo("i'm going to "+pos+ ' position')
+        rospy.loginfo("I'm going to "+pos+ ' position')
     
     def publish_detection(self,detections,head_position):
         '''pubblica una lista delle detection individuate e la relativa posizione nel campo visivo di pepper attraverso il DetectionInfoHandler.'''

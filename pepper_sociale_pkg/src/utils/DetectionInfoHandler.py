@@ -2,9 +2,9 @@ from pepper_sociale_pkg.msg import DetectionInfo
 import rospy
 
 class DetectionInfoHandler:
-'''
-Classe responsabile delle pubblicazioni delle detection e della relativa posizione nel campo visivo di pepper
-'''
+    '''
+    Classe responsabile delle pubblicazioni delle detection e della relativa posizione nel campo visivo di pepper
+    '''
     def __init__(self):
         '''init del messaggio e del publisher'''
         self._message=DetectionInfo()
@@ -15,5 +15,5 @@ Classe responsabile delle pubblicazioni delle detection e della relativa posizio
         self._message.detections=detections
         self._message.head_position=head_position
         self._pub_detection.publish(self._message)
-        rospy.loginfo("Detection and head pos published")
+        
 

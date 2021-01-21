@@ -36,13 +36,12 @@ def detect_image_client(img):
 
 def apply_detection():
     current_img_msg = rospy.wait_for_message("/pepper_robot/camera/front/camera/image_raw", Image) #si iscrive al topic messo a disposizione da Pepper, prende l'immagine corrente e annulla l'iscrizione 
-    #current_img_msg = rospy.wait_for_message("/image/image_raw", Image)
     detection_msg=detect_image_client(current_img_msg)
     return detection_msg
 
 rospy.sleep(2.0) # attende 2 secondi all'inizio
 pepper_handler.turn_head('start') # gira la testa al centro
-pepper_handler.publish_detection([],'start') #pubblica un messaggio di tipo DetectionInfo, utilizzando una lista vuota e lo stato di start per indicare che è nella posizione di start e sta quindi per iniziare a girare la testa
+pepper_handler.publish_detection([],'start') #pubblica un messaggio di tipo DetectionInfo, utilizzando una lista vuota e lo stato di start per indicare che e nella posizione di start e sta quindi per iniziare a girare la testa
 
 apply_detection() # utilizziamo il detector su un'immagine prima di iniziare a far girare la testa al robot per ultimare l'inizializzazione della rete e consentire un tempo costante per le successive detection 
 rospy.loginfo("Detection service ready")

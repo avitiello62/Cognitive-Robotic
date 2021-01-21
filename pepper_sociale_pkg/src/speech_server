@@ -6,7 +6,7 @@ from pepper_sociale_pkg.srv import Say
 class AnimatedSay(NaoqiNode):
     """
     Questa classe fornisce un proxy verso AlAnimatedSpeech che utilizza le API di NAOqi
-    per permettere al robot di parlare. Inoltre fornisce un Service per dare la possibilità all'utente finale
+    per permettere al robot di parlare. Inoltre fornisce un Service per dare la possibilita all utente finale
     di utilizzare tali API.
     """
     def __init__(self):
@@ -25,7 +25,6 @@ class AnimatedSay(NaoqiNode):
         """
         rospy.loginfo("SPEECH SERVICE CALL: %s" % data.message)
         self.speech.say(data.message)
-        #rospy.loginfo("END: %s" % data.message)
         return True
         
     def connectNaoQi(self):
