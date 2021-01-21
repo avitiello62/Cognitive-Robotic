@@ -240,6 +240,10 @@ string message
 ---
 bool result
 ```
+
+### UML Class Diagram
+![cogrob](https://user-images.githubusercontent.com/58516353/105393241-677cbd80-5c1c-11eb-90eb-a41f74d3f2eb.png)
+
 ###  DetectionInfoHandler
 
 Classe responsabile delle pubblicazioni delle detection e della relativa posizione nel campo visivo di pepper 
