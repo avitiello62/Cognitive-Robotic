@@ -328,7 +328,6 @@ class PepperHandler:
             attraverso il DetectionInfoHandler.'''
 ```
 
-
 ###  Detector
 Classe Detector che istanzia un detector preaddestrato con la libreria tensorflow
 #### Metodi
