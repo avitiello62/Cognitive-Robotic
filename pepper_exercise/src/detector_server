@@ -4,7 +4,7 @@ import rospy
 from vision_msgs.msg import Detection2D, Detection2DArray, ObjectHypothesisWithPose
 from utils.Detector import Detector
 import ros_numpy # pip3 install git+https://github.com/eric-wieser/ros_numpy
-from pepper_exercise.srv import Detect
+from pepper_sociale_pkg.srv import Detect
 import tensorflow as tf
 
 """
@@ -20,10 +20,10 @@ print('detector ready.')
 
 def detect_image(msg):
     """
-    La funzione è una callback che viene chiamata quando si invoca il servizio detect_service.
-    Essa riceve in ingresso istanze del tipo DetectRequest, dal quale preleva un oggetto Image
-    che passa a un Detector, il quale a sua volta restituisce un istanza di tipo Detection2DArray, che questa
-    funzione restituisce in output.
+        La funzione è una callback che viene chiamata quando si invoca il servizio detect_service.
+        Essa riceve in ingresso un messagio di tipo DetectRequest, dal quale preleva un oggetto Image
+        che passa a un Detector. Il detector restituisce un istanza di tipo Detection2DArray, che questa
+        funzione restituisce in output.
     """
     img=msg.img #preleva l'oggetto chiamato img in DetectRequest
     image = ros_numpy.numpify(img)
@@ -46,7 +46,7 @@ def detect_image(msg):
 
 def detection_server():
     """
-    Questa funzione inizializza il nodo detector_serer, per poi mettere a disposizione il servizio detect_service.
+    Questa funzione inizializza il nodo detector_server, per poi mettere a disposizione il servizio detect_service.
     """
     rospy.init_node('detector_server') #dichiarazione del nodo
     s = rospy.Service('detect_service', Detect, detect_image) #dichiarazione del servizio detect_service.

@@ -1,20 +1,19 @@
 #!/usr/bin/env python
 import rospy
 from sensor_msgs.msg import Image
-from pepper_exercise.srv import Detect
-from pepper_exercise.msg import DetectionInfo
+from pepper_sociale_pkg.srv import Detect
+from pepper_sociale_pkg.msg import DetectionInfo
 from utils.PepperHandler import PepperHandler
 
 
 """
-Questo file contiene il nodo che ha il compito di coordinare le azione degli altri nodi, chiamato pepper_object_recognition.
+Questo file contiene il nodo, chiamato pepper_object_recognition, che ha il compito di coordinare le azione degli altri nodi.
 Rappresenta il core del progetto, infatti permette al robot di girare la testa nell'ordine e nelle posizioni
-prestabilite (left, center, right), in ognuna delle quali ottiene un'immagine
-riferita alla posizione corrente chiamando il topic messo a disposizione dal robot, utilizza il servizio 
-per effettuare la detection e salva lo stato della testa e i risultati della detection in un unico messaggio che pubblica
+prestabilite (left, center, right). In ognuna di queste posizioni ottiene un'immagine richiamando il metodo rospy.wait_for_message() sul topic relativo alla camera frontale del robot.
+Richiama quindi il servizio per effettuare la detection e salva lo stato della testa e i risultati della detection in un unico messaggio che pubblica
 sul topic /detection_and_head_position.
 """
-# initializza i nodi and registra i topic dei Publisher al nodo master
+# inizializza i nodi e registra i topic dei Publisher al nodo master
 rospy.init_node('pepper_object_recognition')
 pub_detection = rospy.Publisher('detection_and_head_position', DetectionInfo, queue_size=0)
 pepper_handler=PepperHandler()

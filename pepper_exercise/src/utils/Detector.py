@@ -2,7 +2,7 @@ import tensorflow as tf
 assert(int(tf.__version__.split('.')[0]) >= 2)
 import numpy as np
 
-class Detector():
+class Detector:
 '''
 Classe Detector che istanzia un detector preaddestrato con la libreria tensorflow
 '''
@@ -11,7 +11,7 @@ Classe Detector che istanzia un detector preaddestrato con la libreria tensorflo
         self.detect_fn = tf.saved_model.load(model_path)
 
     def __call__(self, img, threshold=0.5):
-        '''chiamata al detector che restituisce le detection sull'immagine passata'''
+        '''chiamata al detector che restituisce le detection sull'immagine passata, fissato il parametro threshold'''
         img = img[:,:,::-1]
         input_tensor = tf.convert_to_tensor(img)
         input_tensor = input_tensor[tf.newaxis, ...]

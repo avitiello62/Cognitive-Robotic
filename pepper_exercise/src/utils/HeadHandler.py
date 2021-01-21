@@ -23,7 +23,7 @@ Classe responsabile del movimento dei giunti della testa di pepper.
         self._s.speed = 0.2
 
     def set_joint_angles(self,angles):
-        '''set dell angolo di rotazione della testa di pepper'''
+        '''set dell'angolo di rotazione della testa di pepper'''
         self._s.joint_angles = angles
         
     def publish_joint(self):

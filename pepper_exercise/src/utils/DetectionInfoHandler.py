@@ -1,9 +1,9 @@
-from pepper_exercise.msg import DetectionInfo
+from pepper_sociale_pkg.msg import DetectionInfo
 import rospy
 
 class DetectionInfoHandler:
 '''
-Classe responsabile delle pubblicazioni delle detection e della relativa poszione nel campo visivo di pepper
+Classe responsabile delle pubblicazioni delle detection e della relativa posizione nel campo visivo di pepper
 '''
     def __init__(self):
         '''init del messaggio e del publisher'''
